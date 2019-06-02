@@ -1,5 +1,4 @@
 import pygame
-from threading import Timer
 
 pygame.init()
 
@@ -8,31 +7,36 @@ green = (0, 255, 0)
 blue = (0, 0, 128)
 
 # assigning values to X and Y variable
-WIDTH = 400
-HEIGHT = 400
+WIDTH = 800
+HEIGHT = 480
+
 
 class Display:
 
-    def __init__(self,clock):
-        self.display_surface = pygame.display.set_mode((WIDTH, HEIGHT ))
-        self.clock = clock
+    theDate = None
+    timeRect = None
+    font = None
+    display_surface = None
+
+    def __init__(self):
+        self.display_surface = pygame.display.set_mode((WIDTH, HEIGHT))
         self.font = pygame.font.Font('freesansbold.ttf', 32)
         self.display_surface.fill(white)
-        self.update()
 
-    def updateTime(self):
-        print("Update time")
-        theTime = self.font.render(self.clock.hour()+self.clock.second()+self.clock.minute(), True, green)
-        timeRect = theTime.get_rect()
-        timeRect.center = (WIDTH // 2, HEIGHT // 2)
-        self.display_surface.blit(theTime, timeRect)
-        self.update()
-        Timer(5, self.updateTime)
+    def updateTime(self,value):
+        theTime = self.font.render(value, True, green)
+        self.timeRect = theTime.get_rect()
+        self.timeRect.center = (WIDTH // 2, HEIGHT // 2)
+        blank = pygame.Surface((self.timeRect.width,self.timeRect.height))
+        blank.fill(white)
+        self.display_surface.blit(blank, self.timeRect)
+        self.display_surface.blit(theTime, self.timeRect)
+        # print("Update time to "+value)
 
-    def updateDate(self):
-        theDate = self.font.render(self.clock.fullDate(), True, green, blue)
-        self.display_surface.blit(theDate, (50,50))
+    def updateDate(self,value):
+        self.theDate = self.font.render(value, True, green, blue)
+        self.display_surface.blit(self.theDate, (50,50))
 
     def update(self):
-        self.updateDate()
+        # print("update the things")
         pygame.display.update()
