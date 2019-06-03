@@ -1,4 +1,4 @@
-import credentials
+import config
 from src import metoffer
 from threading import Timer
 
@@ -8,5 +8,5 @@ class Data:
         self.client = client
 
     def forecast(self):
-        loc = self.client.nearest_loc_forecast(credentials.lat, credentials.lng, metoffer.THREE_HOURLY)
+        loc = self.client.nearest_loc_forecast(config.lat, config.lng, metoffer.THREE_HOURLY)
         return metoffer.Weather(loc)

@@ -1,6 +1,6 @@
 import time
 import pygame
-import credentials
+import config
 from src import backlight
 from src import metoffer
 from src import weather
@@ -39,5 +39,5 @@ while True :
         # Quit
         if event.type == pygame.QUIT :
             quit()
-        if(event.type == pygame.MOUSEBUTTONDOWN):
+        if(event.type == pygame.MOUSEBUTTONDOWN and config.backlight_control):
             backlight.toggle()
