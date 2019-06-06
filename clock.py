@@ -10,6 +10,8 @@ from threading import Timer,Thread,Event
 
 backlight = backlight.Backlight(5)
 # weather = weather.Data( metoffer.MetOffer(credentials.metoffice_key) )
+# forecast = weather.forecast()
+# pprint.pprint(forecast.data)
 clock = clock.DateTime()
 display = display.Display()
 
@@ -21,19 +23,21 @@ class Tocker(Thread):
 
     def run(self):
         while not self.stopped.wait(0.5):
-            # print('tick')
-            if(clock.isNewSecond()):
-                # print('tock')
-                display.updateTime(clock.hour()+clock.second()+clock.minute());
+            display.tick();
+            if(clock.isNewMinute()):
+                display.updateMinute(clock.minute());
                 if(clock.isNewHour()):
-                    display.updateDate(clock.fullDate());
-                display.update()
+                    display.updateHour(clock.hour());
+                    display.updateDate(clock.day(),clock.fullDate());
+                    # updateDate
+                    # updateWeather
+                    # updateActions
+            display.update()
 
 stopFlag = Event()
 thread = Tocker(stopFlag,clock)
 thread.start()
-# forecast = weather.forecast()
-# pprint.pprint(forecast.data)
+
 while True :
     for event in pygame.event.get() :
         # Quit

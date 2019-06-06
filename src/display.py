@@ -3,41 +3,66 @@ import pygame
 pygame.init()
 pygame.mouse.set_visible(0)
 
-white = (255, 255, 255)
-green = (0, 255, 0)
-blue = (0, 0, 128)
+fancyFont = 'fonts/Aladin-Regular.ttf'
+plainFont = 'freesansbold.ttf'
 
-# assigning values to X and Y variable
-WIDTH = 800
-HEIGHT = 480
+white = (255, 255, 255)
+purple = (57,2,68)
+
+screen = pygame.display.set_mode((800, 480))
+timeFont = pygame.font.Font(fancyFont, 120)
+dateFont = pygame.font.Font(fancyFont, 48)
+background = pygame.image.load('images/background.png')
 
 
 class Display:
-
-    theDate = None
-    timeRect = None
-    font = None
-    display_surface = None
+    ticktock = True
 
     def __init__(self):
-        self.display_surface = pygame.display.set_mode((WIDTH, HEIGHT))
-        self.font = pygame.font.Font('freesansbold.ttf', 32)
-        self.display_surface.fill(white)
+        screen.blit(background,(0,0))
+        self.update();
 
-    def updateTime(self,value):
-        theTime = self.font.render(value, True, green)
-        self.timeRect = theTime.get_rect()
-        self.timeRect.center = (WIDTH // 2, HEIGHT // 2)
-        blank = pygame.Surface((self.timeRect.width,self.timeRect.height))
-        blank.fill(white)
-        self.display_surface.blit(blank, self.timeRect)
-        self.display_surface.blit(theTime, self.timeRect)
-        # print("Update time to "+value)
+    def tick(self):
+        self.erase(201,35,27,86)
+        self.ticktock = not self.ticktock
+        if(self.ticktock):
+            return
+        theSecond = timeFont.render(':', True, purple)
+        secondRect = theSecond.get_rect()
+        secondRect.center = (210,79)
+        screen.blit(theSecond, secondRect)
 
-    def updateDate(self,value):
-        self.theDate = self.font.render(value, True, green, blue)
-        self.display_surface.blit(self.theDate, (50,50))
+    def updateMinute(self,value):
+        self.erase(225,25,125,119)
+        theMinute = timeFont.render(value, True, purple)
+        minuteRect = theMinute.get_rect()
+        minuteRect.left = 225
+        minuteRect.top = 16
+        screen.blit(theMinute, minuteRect)
+
+    def updateHour(self,value):
+        self.erase(70,25,119,119)
+        theHour = timeFont.render(value, True, purple)
+        hourRect = theHour.get_rect()
+        hourRect.right = 198
+        hourRect.top = 16
+        screen.blit(theHour, hourRect)
+
+    def erase(self,x,y,w,h):
+        screen.blit(background, (x, y), pygame.Rect(x, y, w, h))
+        pygame.display.update()
+
+    def updateDate(self,dayName,fullDate):
+        self.erase(405,25,370,119)
+        theDay = dateFont.render(dayName, True, purple)
+        dayRect = theDay.get_rect()
+        dayRect.center = (587,57)
+        screen.blit(theDay, dayRect)
+
+        theDate = dateFont.render(fullDate, True, purple)
+        dateRect = theDate.get_rect()
+        dateRect.center = (587,109)
+        screen.blit(theDate, dateRect)
 
     def update(self):
-        # print("update the things")
-        pygame.display.update()
+        pygame.display.flip()

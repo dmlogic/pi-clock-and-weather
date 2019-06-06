@@ -1,7 +1,7 @@
 import datetime
 
 class DateTime:
-    lastSecond = 99
+    lastMinute = 99
     lastHour = 99
     date = None
 
@@ -9,13 +9,14 @@ class DateTime:
         self.date = datetime.datetime.now()
         return self.date
 
-    def isNewSecond(self):
+    def isNewMinute(self):
         self.theTime()
-        if(self.date.second == self.lastSecond):
+        minute = self.date.minute
+        if(minute == self.lastMinute):
             ret = False
         else:
             ret = True
-        self.lastSecond = self.date.second
+        self.lastMinute = minute
         return ret
 
     def isNewHour(self):
@@ -33,11 +34,6 @@ class DateTime:
 
     def minute(self):
         return self.theTime().strftime("%M")
-
-    def second(self):
-        if (self.theTime().second %2 == 0):
-            return ':'
-        return ' '
 
     def day(self):
         return self.theTime().strftime("%A")
