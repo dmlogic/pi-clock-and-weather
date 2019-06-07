@@ -8,10 +8,12 @@ plainFont = 'freesansbold.ttf'
 
 white = (255, 255, 255)
 purple = (57,2,68)
+pale = (209,203,211)
 
 screen = pygame.display.set_mode((800, 480))
 timeFont = pygame.font.Font(fancyFont, 120)
 dateFont = pygame.font.Font(fancyFont, 48)
+summaryFont = pygame.font.Font(fancyFont, 37)
 background = pygame.image.load('images/background.png')
 
 
@@ -47,6 +49,20 @@ class Display:
         hourRect.right = 198
         hourRect.top = 16
         screen.blit(theHour, hourRect)
+
+    def updateWeatherSummary(self,summary):
+        self.erase(25,143,375,115)
+        minTemp = summaryFont.render('min '+summary[1]+'°', True, pale)
+        minRect = minTemp.get_rect()
+        minRect.right = 198
+        minRect.top = 174
+
+        screen.blit(minTemp, minRect)
+        maxTemp = summaryFont.render('max '+summary[0]+'°', True, pale)
+        maxRect = maxTemp.get_rect()
+        maxRect.left = 214
+        maxRect.top = 174
+        screen.blit(maxTemp, maxRect)
 
     def erase(self,x,y,w,h):
         screen.blit(background, (x, y), pygame.Rect(x, y, w, h))

@@ -9,9 +9,10 @@ from src import display
 from threading import Timer,Thread,Event
 
 backlight = backlight.Backlight(5)
-# weather = weather.Data( metoffer.MetOffer(credentials.metoffice_key) )
+weather = weather.Data( metoffer.MetOffer(config.metoffice_key) )
 # forecast = weather.forecast()
 # pprint.pprint(forecast.data)
+# quit()
 clock = clock.DateTime()
 display = display.Display()
 
@@ -29,7 +30,7 @@ class Tocker(Thread):
                 if(clock.isNewHour()):
                     display.updateHour(clock.hour());
                     display.updateDate(clock.day(),clock.fullDate());
-                    # updateDate
+                    display.updateWeatherSummary(weather.daySummary());
                     # updateWeather
                     # updateActions
             display.update()

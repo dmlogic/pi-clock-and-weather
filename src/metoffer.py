@@ -175,6 +175,14 @@ class MetOffer():
     def __init__(self, key):
         self.key = key
 
+    """
+    Add me some stuff to make life easier
+    """
+    def find_site(self,lat,lng,step):
+        sitelist = self.loc_forecast(SITELIST, step)
+        sites = parse_sitelist(sitelist)
+        return get_nearest_site(sites, lat, lng)
+
     def _query(self, data_category, resource_category, field, request, step, isotime=None):
         """
         Request and return data from DataPoint RESTful API.
