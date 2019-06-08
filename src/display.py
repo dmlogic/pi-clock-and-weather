@@ -1,4 +1,5 @@
 import pygame
+import pprint
 
 pygame.init()
 pygame.mouse.set_visible(0)
@@ -64,6 +65,20 @@ class Display:
         maxRect.top = 174
         screen.blit(maxTemp, maxRect)
 
+    def updateWeatherForecast(self,rawData,now):
+        startIndex = self.findStartOfWeatherRange(rawData,now)
+        finishIndex = startIndex + 7
+        for i in range(startIndex,finishIndex):
+            pprint.pprint(rawData[i])
+
+    def findStartOfWeatherRange(self,rawData,now):
+        startHour = now.strftime("%Y-%m-%d ") + str(now.hour - now.hour%3)
+        for i in range(len(rawData)):
+            forecastHour = rawData[i]["timestamp"][0].strftime("%Y-%m-%d %H")
+            if(forecastHour == startHour):
+                return i
+        return 0
+
     def erase(self,x,y,w,h):
         screen.blit(background, (x, y), pygame.Rect(x, y, w, h))
         pygame.display.update()
@@ -82,3 +97,17 @@ class Display:
 
     def update(self):
         pygame.display.flip()
+
+class Forecast:
+    data = None
+    def __init__(self,data):
+        self.data = data
+
+    def render(self):
+        rainRisk # Pp
+        rainRiskColour # infer
+        weatherIcon # W
+        temperature # T
+        temperatureColour #infer
+        time # $ minutes since midnight
+        # Uv index?

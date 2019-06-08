@@ -1,6 +1,7 @@
 import time
 import pygame
 import config
+import pprint
 from src import backlight
 from src import metoffer
 from src import weather
@@ -31,6 +32,7 @@ class Tocker(Thread):
                     display.updateHour(clock.hour());
                     display.updateDate(clock.day(),clock.fullDate());
                     display.updateWeatherSummary(weather.daySummary());
+                    display.updateWeatherForecast(weather.forecast(),clock.theTime());
                     # updateWeather
                     # updateActions
             display.update()

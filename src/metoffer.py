@@ -191,6 +191,7 @@ class MetOffer():
         query_string = "?" + "&".join(["res=" + step, "time=" + isotime if isotime is not None else "", "key=" + self.key])
         url = rest_url + query_string
         page = url_lib.urlopen(url)
+        print(url)
         pg = page.read()
         return pg
 
@@ -367,7 +368,7 @@ def extract_data_key(returned_data):
     Build and return dict containing measurement 'name', description ('text')
     and unit of measurement.
     """
-    return {i["name"]: {"text": i["$"], "units": i["units"]} for i in returned_data["SiteRep"]["Wx"]["Param"]}
+    return {i["name"]: {"text": i["name"], "units": i["units"]} for i in returned_data["SiteRep"]["Wx"]["Param"]}
 
 
 class Weather():
