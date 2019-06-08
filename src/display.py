@@ -5,11 +5,13 @@ pygame.init()
 pygame.mouse.set_visible(0)
 
 fancyFont = 'fonts/Aladin-Regular.ttf'
-plainFont = 'freesansbold.ttf'
+plainFont = 'fonts/Arial.ttf'
 
 white = (255, 255, 255)
 purple = (57,2,68)
 pale = (209,203,211)
+black = (51,51,51)
+rain = (28,116,153)
 
 screen = pygame.display.set_mode((800, 480))
 timeFont = pygame.font.Font(fancyFont, 120)
@@ -44,7 +46,7 @@ class Display:
         screen.blit(theMinute, minuteRect)
 
     def updateHour(self,value):
-        self.erase(70,25,119,119)
+        self.erase(70,25,139,119)
         theHour = timeFont.render(value, True, purple)
         hourRect = theHour.get_rect()
         hourRect.right = 198
@@ -66,6 +68,7 @@ class Display:
         screen.blit(maxTemp, maxRect)
 
     def updateWeatherForecast(self,rawData,now):
+        self.erase(25,258,750,197)
         startIndex = self.findStartOfWeatherRange(rawData,now)
         finishIndex = startIndex + 7
         instance = 0
@@ -104,19 +107,49 @@ class Display:
 
 class Forecast:
     data = None
+    tile = None
+    font = None
     def __init__(self,data):
         self.data = data
+        self.setTile()
+        self.font = pygame.font.Font(plainFont, 20)
+#
+    def setTile(self):
+        self.tile = pygame.Surface((105, 196), pygame.SRCALPHA, 32)
+        self.tile = self.tile.convert_alpha()
+
+    def setIcon(self):
+        icon = pygame.image.load('images/weather_icons/'+str(self.data["W"][0])+'.png')
+        self.tile.blit(icon,(15,40))
+
+    def setTime(self):
+        theTime = self.font.render(self.data["timestamp"][0].strftime("%H:00"), True, black)
+        timeRect = theTime.get_rect()
+        timeRect.center = (51,170)
+        self.tile.blit(theTime, timeRect)
+
+    def setRainLikelihood(self):
+        chance = self.data["Pp"][0]
+        if(chance <= 30):
+            colour = black
+        else:
+            colour = rain
+        theRain = self.font.render(str(chance)+'%', True, colour)
+        rainRect  = theRain.get_rect()
+        rainRect .center = (51,24)
+        self.tile.blit(theRain, rainRect )
+
+    def setTemperature(self):
+        theTemp = self.font.render(str(self.data["T"][0])+'°', True, black)
+        tempRect  = theTemp.get_rect()
+        tempRect .center = (51,130)
+        self.tile.blit(theTemp, tempRect )
 
     def render(self):
-        tile = pygame.Surface((105, 196), pygame.SRCALPHA, 32)
-        tile = tile.convert_alpha()
-        icon = pygame.image.load('images/weather_icons/'+str(self.data["W"][0])+'.png')
-        tile.blit(icon,(15,40))
-        return tile
-        # rainRisk # Pp
-        # rainRiskColour # infer
-        # weatherIcon # W
+        self.setIcon()
+        self.setTime()
+        self.setRainLikelihood()
+        self.setTemperature()
+        return self.tile
         # temperature # T
         # temperatureColour #infer
-        # time # $ minutes since midnight
-        # Uv index?
