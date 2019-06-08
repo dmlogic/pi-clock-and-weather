@@ -57,8 +57,8 @@ class Display:
         minRect = minTemp.get_rect()
         minRect.right = 198
         minRect.top = 174
-
         screen.blit(minTemp, minRect)
+
         maxTemp = summaryFont.render('max '+summary[0]+'°', True, pale)
         maxRect = maxTemp.get_rect()
         maxRect.left = 214
@@ -68,8 +68,12 @@ class Display:
     def updateWeatherForecast(self,rawData,now):
         startIndex = self.findStartOfWeatherRange(rawData,now)
         finishIndex = startIndex + 7
+        instance = 0
         for i in range(startIndex,finishIndex):
-            pprint.pprint(rawData[i])
+            fc = Forecast(rawData[i])
+            offset = 25 + (instance * 107)
+            screen.blit(fc.render(), (offset,258))
+            instance +=1
 
     def findStartOfWeatherRange(self,rawData,now):
         startHour = now.strftime("%Y-%m-%d ") + str(now.hour - now.hour%3)
@@ -104,10 +108,15 @@ class Forecast:
         self.data = data
 
     def render(self):
-        rainRisk # Pp
-        rainRiskColour # infer
-        weatherIcon # W
-        temperature # T
-        temperatureColour #infer
-        time # $ minutes since midnight
+        tile = pygame.Surface((105, 196), pygame.SRCALPHA, 32)
+        tile = tile.convert_alpha()
+        icon = pygame.image.load('images/weather_icons/'+str(self.data["W"][0])+'.png')
+        tile.blit(icon,(15,40))
+        return tile
+        # rainRisk # Pp
+        # rainRiskColour # infer
+        # weatherIcon # W
+        # temperature # T
+        # temperatureColour #infer
+        # time # $ minutes since midnight
         # Uv index?
