@@ -22,6 +22,8 @@ class Tocker(Thread):
 
     def run(self):
         while not self.stopped.wait(0.5):
+            if(backlight.state == 'off'):
+                continue
             display.tick()
             if(clock.isNewMinute()):
                 display.updateMinute(clock.minute())

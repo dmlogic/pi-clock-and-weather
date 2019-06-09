@@ -2,9 +2,9 @@ import os
 from threading import Timer
 
 class Backlight:
+    state = 'on'
     def __init__(self,delay):
         self.data = []
-        self.state = 'on'
         self.delay = delay
         self.lightTimer = None
 
