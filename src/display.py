@@ -109,6 +109,60 @@ class Forecast:
     data = None
     tile = None
     font = None
+    temperatureColours = {
+        "-10":(127,141,184),
+        "-9":(139,152,191),
+        "-8":(152,164,198),
+        "-7":(162,172,203),
+        "-6":(175,184,211),
+        "-5":(187,194,217),
+        "-4":(198,204,223),
+        "-3":(211,215,230),
+        "-2":(222,226,237),
+        "-1":(234,237,243),
+        "0":(245,246,250),
+        "1":(255,249,232),
+        "2":(255,245,217),
+        "3":(255,241,202),
+        "4":(255,237,186),
+        "5":(255,234,172),
+        "6":(255,229,155),
+        "7":(255,226,141),
+        "8":(255,222,125),
+        "9":(255,218,109),
+        "10":(255,215,101),
+        "11":(255,210,98),
+        "12":(255,204,95),
+        "13":(255,199,92),
+        "14":(255,194,89),
+        "15":(255,189,86),
+        "16":(255,184,83),
+        "17":(255,179,80),
+        "18":(255,173,77),
+        "19":(255,168,74),
+        "20":(255,164,71),
+        "21":(255,158,68),
+        "22":(255,153,66),
+        "23":(255,148,62),
+        "24":(255,143,59),
+        "25":(255,138,57),
+        "26":(255,131,53),
+        "27":(254,125,51),
+        "28":(250,116,51),
+        "29":(248,109,51),
+        "30":(243,98,51),
+        "31":(239,87,51),
+        "32":(235,78,51),
+        "33":(231,68,51),
+        "34":(227,58,51),
+        "35":(222,46,51),
+        "36":(218,36,51),
+        "37":(214,25,51),
+        "38":(209,13,51),
+        "39":(205,3,51),
+        "40":(195,0,49),
+    }
+
     def __init__(self,data):
         self.data = data
         self.setTile()
@@ -140,10 +194,23 @@ class Forecast:
         self.tile.blit(theRain, rainRect )
 
     def setTemperature(self):
-        theTemp = self.font.render(str(self.data["T"][0])+'°', True, black)
-        tempRect  = theTemp.get_rect()
-        tempRect .center = (51,130)
-        self.tile.blit(theTemp, tempRect )
+        t = self.data["T"][0]
+        panel = pygame.Surface((51, 38))
+        panel.fill(self.getTempColour(t))
+        theTemp = self.font.render(str(t)+'°', True, black)
+        fontRect  = theTemp.get_rect()
+        fontRect.center = (27,19)
+        panel.blit(theTemp, fontRect )
+        tempRect  = panel.get_rect()
+        tempRect.center = (52,130)
+        self.tile.blit(panel, tempRect )
+
+    def getTempColour(self,t):
+        if(t < -10):
+            return self.temperatureColours["-10"]
+        if(t > 40):
+            return self.temperatureColours["40"]
+        return self.temperatureColours[str(t)]
 
     def render(self):
         self.setIcon()
