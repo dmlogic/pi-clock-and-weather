@@ -191,7 +191,7 @@ class MetOffer():
         query_string = "?" + "&".join(["res=" + step, "time=" + isotime if isotime is not None else "", "key=" + self.key])
         url = rest_url + query_string
         page = url_lib.urlopen(url)
-        print(url)
+        # print(url)
         pg = page.read()
         return pg
 

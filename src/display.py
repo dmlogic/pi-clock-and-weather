@@ -19,9 +19,10 @@ dateFont = pygame.font.Font(fancyFont, 48)
 summaryFont = pygame.font.Font(fancyFont, 37)
 background = pygame.image.load('images/background.png')
 
-
 class Display:
+
     ticktock = True
+    actions = None
 
     def __init__(self):
         screen.blit(background,(0,0))
@@ -68,6 +69,11 @@ class Display:
         screen.blit(maxTemp, maxRect)
 
     def updateWeatherForecast(self,rawData,now):
+        self.actions = {
+            "uv":False,
+            "wet":0,
+            "cold":False,
+        }
         self.erase(25,258,750,197)
         startIndex = self.findStartOfWeatherRange(rawData,now)
         finishIndex = startIndex + 7
@@ -76,7 +82,41 @@ class Display:
             fc = Forecast(rawData[i])
             offset = 25 + (instance * 107)
             screen.blit(fc.render(), (offset,258))
+            if(self.isRelevantToActions(rawData[i]["timestamp"][0].hour,now.hour)):
+                self.updateActionValues(rawData[i])
             instance +=1
+
+    def isRelevantToActions(self,hour,now):
+        if(hour > now and hour >= 9 and hour <= 18):
+            return True
+        return False
+
+    def updateActionValues(self,data):
+        # UV index above 5 is a flag
+        if(data["U"][0] > 5):
+            self.actions["uv"] = True
+
+        # 30% chance of rain counts as one warning score
+        if(data["Pp"][0] >= 30):
+            self.actions["wet"] +=1
+
+        # Anything 5 degrees or below is cold
+        if(data["T"][0] <= 5):
+            self.actions["cold"] = True
+
+    def displayActions(self):
+        # Any UV warning in the day gives an icon
+        if(self.actions["uv"]):
+            uvIcon = pygame.image.load('images/suncream.png')
+            screen.blit(uvIcon,(405,143))
+        # Rain score of 2 or more gives an icon
+        if(self.actions["wet"] > 1):
+            uvIcon = pygame.image.load('images/umbrella.png')
+            screen.blit(uvIcon,(528,143))
+        # Cold warning gives icon
+        if(self.actions["cold"]):
+            uvIcon = pygame.image.load('images/hat.png')
+            screen.blit(uvIcon,(651,143))
 
     def findStartOfWeatherRange(self,rawData,now):
         startHour = now.strftime("%Y-%m-%d ") + str(now.hour - now.hour%3)
@@ -218,5 +258,3 @@ class Forecast:
         self.setRainLikelihood()
         self.setTemperature()
         return self.tile
-        # temperature # T
-        # temperatureColour #infer

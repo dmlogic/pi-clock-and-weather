@@ -11,9 +11,6 @@ from threading import Timer,Thread,Event
 
 backlight = backlight.Backlight(5)
 weather = weather.Data( metoffer.MetOffer(config.metoffice_key) )
-# forecast = weather.forecast()
-# pprint.pprint(forecast.data)
-# quit()
 clock = clock.DateTime()
 display = display.Display()
 
@@ -25,16 +22,15 @@ class Tocker(Thread):
 
     def run(self):
         while not self.stopped.wait(0.5):
-            display.tick();
+            display.tick()
             if(clock.isNewMinute()):
-                display.updateMinute(clock.minute());
+                display.updateMinute(clock.minute())
                 if(clock.isNewHour()):
-                    display.updateHour(clock.hour());
-                    display.updateDate(clock.day(),clock.fullDate());
-                    display.updateWeatherSummary(weather.daySummary());
-                    display.updateWeatherForecast(weather.forecast(),clock.theTime());
-                    # updateWeather
-                    # updateActions
+                    display.updateHour(clock.hour())
+                    display.updateDate(clock.day(),clock.fullDate())
+                    display.updateWeatherSummary(weather.daySummary())
+                    display.updateWeatherForecast(weather.forecast(),clock.theTime())
+                    display.displayActions()
             display.update()
 
 stopFlag = Event()
