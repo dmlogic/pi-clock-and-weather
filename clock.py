@@ -9,7 +9,7 @@ from src import clock
 from src import display
 from threading import Timer,Thread,Event
 
-backlight = backlight.Backlight(5)
+backlight = backlight.Backlight(config.backlight_delay)
 weather = weather.Data( metoffer.MetOffer(config.metoffice_key) )
 clock = clock.DateTime()
 display = display.Display()
