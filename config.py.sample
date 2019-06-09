@@ -1,0 +1,9 @@
+#  https://register.metoffice.gov.uk/WaveRegistrationClient/public/register.do?service=datapoint
+metoffice_key="get one and add it here"
+# Your latitude/longitude coordinates
+lat=50.813667
+lng=-2.474760
+# How long the display stays on after touching screen (seconds)
+backlight_delay = 10
+# Set to False for development not on a PI
+backlight_control = True
