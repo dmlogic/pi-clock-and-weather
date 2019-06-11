@@ -121,7 +121,7 @@ class Display:
     def findStartOfWeatherRange(self,rawData,now):
         startHour = now.strftime("%Y-%m-%d ") + str(now.hour - now.hour%3)
         for i in range(len(rawData)):
-            forecastHour = rawData[i]["timestamp"][0].strftime("%Y-%m-%d %H")
+            forecastHour = rawData[i]["timestamp"][0].strftime("%Y-%m-%d %-H")
             if(forecastHour == startHour):
                 return i
         return 0
