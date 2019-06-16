@@ -105,6 +105,8 @@ class Display:
             self.actions["cold"] = True
 
     def displayActions(self):
+        self.erase(405,143,370,116)
+
         # Any UV warning in the day gives an icon
         if(self.actions["uv"]):
             uvIcon = pygame.image.load('images/suncream.png')
