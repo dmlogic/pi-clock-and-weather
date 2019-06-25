@@ -30,9 +30,12 @@ class Tocker(Thread):
                 if(clock.isNewHour()):
                     display.updateHour(clock.hour())
                     display.updateDate(clock.day(),clock.fullDate())
-                    display.updateWeatherSummary(weather.daySummary())
-                    display.updateWeatherForecast(weather.forecast(),clock.theTime())
-                    display.displayActions()
+                    try:
+                        display.updateWeatherSummary(weather.daySummary())
+                        display.updateWeatherForecast(weather.forecast(),clock.theTime())
+                        display.displayActions()
+                    except:
+                        print('something up with metoffice')
             display.update()
 
 stopFlag = Event()
