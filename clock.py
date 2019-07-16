@@ -9,10 +9,10 @@ from src import clock
 from src import display
 from threading import Timer,Thread,Event
 
-backlight = backlight.Backlight(config.backlight_delay)
 weather = weather.Data( metoffer.MetOffer(config.metoffice_key) )
 clock = clock.DateTime()
 display = display.Display()
+backlight = backlight.Backlight(config.backlight_delay)
 
 class Tocker(Thread):
     def __init__(self, event,clock):
@@ -48,4 +48,6 @@ while True :
         if event.type == pygame.QUIT :
             quit()
         if(event.type == pygame.MOUSEBUTTONDOWN and config.backlight_control):
-            backlight.toggle()
+            state = backlight.toggle()
+            if(state == 'off'):
+                clock.reset()

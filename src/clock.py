@@ -5,6 +5,10 @@ class DateTime:
     lastHour = 99
     date = None
 
+    def reset(self):
+        self.lastMinute = 99
+        self.lastHour = 99
+
     def theTime(self):
         self.date = datetime.datetime.now()
         return self.date
