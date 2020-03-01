@@ -190,8 +190,11 @@ class MetOffer():
         rest_url = "/".join([HOST, data_category, resource_category, field, DATA_TYPE, request])
         query_string = "?" + "&".join(["res=" + step, "time=" + isotime if isotime is not None else "", "key=" + self.key])
         url = rest_url + query_string
-        page = url_lib.urlopen(url)
-        # print(url)
+        thisRequest = url_lib.Request(
+            url,
+            headers={"User-Agent": "Pi Clock"}
+        )
+        page = url_lib.urlopen(thisRequest)
         pg = page.read()
         return pg
 
